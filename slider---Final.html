@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<style type="text/css">
+	*{
+		margin: 0;
+		padding: 0;
+		list-style:none;
+	}
+	
+	.slider{
+		width:500px;
+		margin:auto;
+		overflow:hidden;
+		/*border: 1px solid #f00;*/
+	}
+	.pic{
+		width:2500px;
+		overflow:hidden;
+		position:relative;
+		/*border: 1px solid #ff0;*/
+		padding: 0px;
+	}	
+	.pic li{
+		width:500px;
+		height:400px;
+		float:left;
+		overflow:hidden;
+		/*border: 1px solid #0f0;*/
+	}
+	.pic img{
+		width:100%;
+	}
+
+	.control{
+		margin-top:30px;
+		text-align:center;
+		padding: 0;
+
+	}
+	.control li{
+		display:inline-block;
+		width:10px;
+		height:10px;
+		background-color:#000;
+		border-radius:50%;
+		line-height:20px;
+		cursor:pointer;
+		transition: 0.5s;
+		margin:3px;
+	}
+	.control .active{
+		background-color:#ff0;
+		/*color:#ff0;*/
+	}
+
+	.prev,.next{
+		width:60px;
+		height:60px;
+		text-align:center;
+		color:rgba(255, 255, 255, 0.9);
+		position:absolute;
+		top:20%;
+		z-index:90;
+	}
+	.prev{
+		left:35%;
+	}
+	.next{
+		right:35%;
+	}
+	</style>
+</head>
+<body>
+	
+
+	<div class="slider">
+		<ul class="pic">
+			<li><img src="WEB-PHOTO/bean-milk.JPG" alt=""></li>
+			<li><img src="WEB-PHOTO/coffee-bean.JPG" alt=""></li>
+			<li><img src="WEB-PHOTO/dessert.JPG" alt=""></li>
+			<li><img src="WEB-PHOTO/meat.JPG" alt=""></li>
+			<li><img src="WEB-PHOTO/red-bean-cake.JPG" alt=""></li>
+			<li><img src="WEB-PHOTO/green-tea-chocolate.JPG" alt=""></li>
+			<li><img src="WEB-PHOTO/cookie.JPG" alt=""></li>
+			
+		</ul>
+
+		<a href="#" class="prev"><i class="fa fa-arrow-left"></i></a>
+		<a href="#" class="next"><i class="fa fa-arrow-right"></i></a>
+
+		<ul class="control">
+		</ul>
+		
+	</div>
+
+
+<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var li_index = 0;                    //li索引值的初始值
+		var li_count = $('.pic li').length;  //抓圖片的個數
+		var li_width = $('.slider').width(); //因slider寬度和圖片的寬度相同，所以抓slider的寬度，給ul計算用
+		var picSrc = '';
+
+		var speed = 5000;
+		var moveSpeed = 600;
+		var aa = setInterval( playplay , speed );
+
+		$('.pic').width( li_count*li_width ); //用程式設定.pic的寬度
+
+
+		for(  var i = 0;  i<li_count;  i++  ){
+			$('.control').append('<li></li');
+		}  //loop---判斷 i < li_count ，會繼續執行 i++，
+		   // .control會自行增加 li
+
+		$('.control li').eq(li_index).addClass('active');
+
+		$('.control li').click(function(){
+
+			li_index = $(this).index();
+
+			// clearInterval(aa);
+			// aa = setInterval( playplay , speed );
+
+			$(this).addClass('active').siblings().removeClass();
+			$('.pic').animate({left: li_index*li_width*-1});
+		})
+
+		function playplay(){
+			
+			if(li_index < li_count-1){
+				li_index++;
+			}else{
+				li_index = 0;
+			}
+		
+			$('.control li').eq(li_index).addClass('active').siblings().removeClass();
+			$('.pic').stop(true,false).animate({left:li_index*li_width*-1},moveSpeed);
+		}
+
+		
+ 
+		$('.next').click(
+			function(){
+				$('.control li').removeClass('active');
+
+				if( li_index==6 ){
+				li_index = 0;
+				}else{
+					li_index++;
+				}
+
+				$('.control li').eq(li_index).addClass('active');
+				$('.pic').stop(true,false).animate({left: li_index*li_width*-1});
+				clearInterval(aa);
+			    aa = setInterval( playplay , speed );
+			})
+
+		$('.prev').click(
+			function(){
+				$('.control li').removeClass('active');
+
+				if( li_index==0 ){
+				li_index = 6;
+				}else{
+					li_index--;
+				}
+
+				$('.control li').eq(li_index).addClass('active');
+				$('.pic').stop(true,false).animate({left: li_index*li_width*-1});
+
+				clearInterval(aa);
+				aa = setInterval( playplay , speed );
+		})
+
+		
+
+	})
+</script>
+
+</body>
+</html>
